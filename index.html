@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pekon Muara Jaya II – Pemerintah Pekon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --hijau: #1a5c38;
+      --hijau-muda: #2e7d52;
+      --emas: #c9a84c;
+      --krem: #f5f0e8;
+      --putih: #ffffff;
+      --abu: #6b7280;
+      --teks: #1a1a1a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--krem);
+      color: var(--teks);
+      overflow-x: hidden;
+    }
+
+    /* ---- HEADER ---- */
+    header {
+      background: var(--hijau);
+      color: white;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      min-height: 72px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-lingkaran {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--emas);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .logo-teks h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-teks p {
+      font-size: 0.72rem;
+      opacity: 0.75;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    nav { display: flex; gap: 0.2rem; }
+
+    nav a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #0d3d24 0%, var(--hijau) 55%, #2e7d52 100%);
+      color: white;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0L80 12v2L54 40h-2zm4 0L80 16v2L58 40h-2zm4 0L80 20v2L62 40h-2zm4 0L80 24v2L66 40h-2zm4 0L80 28v2L70 40h-2zm4 0L80 32v2L74 40h-2zm4 0L80 36v2L78 40h-2zm4 0L80 40h-2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.25);
+      border: 1px solid var(--emas);
+      color: var(--emas);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.85;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primer {
+      background: var(--emas);
+      color: var(--hijau);
+      font-weight: 700;
+      padding: 0.75rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none; cursor: pointer;
+    }
+
+    .btn-primer:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
+    .btn-sekunder {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.5);
+      font-weight: 600;
+      padding: 0.75rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .btn-sekunder:hover { background: rgba(255,255,255,0.1); }
+
+    /* ---- STAT BAR ---- */
+    .stat-bar {
+      background: white;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      border-bottom: 3px solid var(--emas);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .stat-item {
+      padding: 1.4rem 2.5rem;
+      text-align: center;
+      border-right: 1px solid #e5e7eb;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-angka {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--hijau);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--abu);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.3rem;
+    }
+
+    /* ---- SECTION UMUM ---- */
+    section { padding: 4rem 2rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .section-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--emas);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--hijau);
+    }
+
+    .section-header p {
+      color: var(--abu);
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* ---- BERITA ---- */
+    #berita { background: var(--krem); }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    .kartu {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .kartu:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+
+    .kartu-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--hijau-muda), var(--hijau));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .kartu-body { padding: 1.2rem; }
+
+    .kartu-tanggal {
+      font-size: 0.72rem;
+      color: var(--abu);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .kartu-body h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--hijau);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .kartu-body p { font-size: 0.85rem; color: var(--abu); line-height: 1.6; }
+
+    /* ---- LAYANAN ---- */
+    #layanan { background: white; }
+
+    .grid-layanan { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+
+    .item-layanan {
+      background: var(--krem);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+
+    .item-layanan:hover { border-color: var(--emas); background: white; }
+
+    .ikon-layanan {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .item-layanan h4 {
+      font-weight: 700;
+      color: var(--hijau);
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .item-layanan p { font-size: 0.8rem; color: var(--abu); line-height: 1.5; }
+
+    /* ---- PENGUMUMAN ---- */
+    #pengumuman { background: var(--hijau); color: white; }
+
+    #pengumuman .section-header h3 { color: white; }
+    #pengumuman .section-tag { color: var(--emas); }
+    #pengumuman .section-header p { color: rgba(255,255,255,0.7); }
+
+    .list-pengumuman { display: flex; flex-direction: column; gap: 1rem; }
+
+    .item-pengumuman {
+      background: rgba(255,255,255,0.1);
+      border-left: 4px solid var(--emas);
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .pengumuman-tgl {
+      background: var(--emas);
+      color: var(--hijau);
+      font-weight: 700;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .item-pengumuman h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .item-pengumuman p { font-size: 0.82rem; opacity: 0.75; line-height: 1.5; }
+
+    /* ---- PERANGKAT DESA ---- */
+    #perangkat { background: var(--krem); }
+
+    .grid-perangkat { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; }
+
+    .kartu-perangkat {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .foto-perangkat {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--hijau-muda), var(--hijau));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 1rem;
+      border: 3px solid var(--emas);
+    }
+
+    .kartu-perangkat h4 { font-weight: 700; color: var(--hijau); font-size: 0.95rem; }
+    .kartu-perangkat p { font-size: 0.8rem; color: var(--abu); margin-top: 0.3rem; }
+
+    /* ---- KONTAK ---- */
+    #kontak { background: white; }
+
+    .grid-kontak { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+
+    @media (max-width: 680px) { .grid-kontak { grid-template-columns: 1fr; } }
+
+    .info-kontak h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--hijau);
+      margin-bottom: 1rem;
+    }
+
+    .baris-kontak {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .ikon-kontak {
+      width: 38px; height: 38px;
+      background: var(--krem);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .baris-kontak p { font-size: 0.85rem; color: var(--abu); line-height: 1.5; }
+    .baris-kontak strong { display: block; color: var(--teks); font-size: 0.9rem; }
+
+    form { display: flex; flex-direction: column; gap: 0.9rem; }
+
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--teks);
+      background: var(--krem);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    form input:focus, form textarea:focus, form select:focus { border-color: var(--hijau); background: white; }
+
+    form textarea { resize: vertical; min-height: 110px; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      background: #0d1f14;
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.82rem;
+    }
+
+    footer strong { color: var(--emas); }
+
+    /* ---- ANIMASI ---- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero > * { animation: fadeUp 0.6s ease both; }
+    .hero .hero-badge { animation-delay: 0.1s; }
+    .hero h2 { animation-delay: 0.2s; }
+    .hero p { animation-delay: 0.3s; }
+    .hero-btns { animation-delay: 0.4s; }
+
+    /* mobile nav */
+    @media (max-width: 700px) {
+      nav { display: none; }
+      .stat-item { padding: 1rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <div class="logo-lingkaran">🌾</div>
+    <div class="logo-teks">
+      <h1>Pekon Muara Jaya II</h1>
+      <p>Kecamatan Kebun Tebu · Kabupaten Lampung Barat</p>
+    </div>
+  </div>
+  <nav>
+    <a href="#berita">Berita</a>
+    <a href="#layanan">Layanan</a>
+    <a href="#pengumuman">Pengumuman</a>
+    <a href="#dokumentasi">Dokumentasi</a>
+    <a href="#perangkat">Perangkat</a>
+    <a href="#kontak">Kontak</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge">🏛️ Pemerintah Pekon Resmi</span>
+  <h2>Melayani Warga<br>dengan Sepenuh Hati</h2>
+  <p>Selamat datang di website resmi Pekon Muara Jaya II. Temukan informasi pekon, layanan administrasi, dan pengumuman terkini di sini.</p>
+  <div class="hero-btns">
+    <a href="#layanan" class="btn-primer">Lihat Layanan</a>
+    <a href="#kontak" class="btn-sekunder">Hubungi Kami</a>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <div class="stat-angka">1.755</div>
+    <div class="stat-label">Jiwa Penduduk</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-angka">860</div>
+    <div class="stat-label">Laki-laki</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-angka">895</div>
+    <div class="stat-label">Perempuan</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-angka">512</div>
+    <div class="stat-label">Kepala Keluarga</div>
+  </div>
+</div>
+
+<!-- BERITA -->
+<section id="berita">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Informasi Terkini</span>
+      <h3>Berita & Kegiatan Pekon</h3>
+      <p>Informasi terbaru seputar kegiatan dan pembangunan pekon</p>
+    </div>
+    <div class="grid-3" id="kontainer-berita">
+      <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;background:white;border-radius:12px;color:var(--abu);">
+        <div style="font-size:2.5rem;margin-bottom:0.8rem;">📭</div>
+        <p style="font-weight:600;color:var(--hijau);margin-bottom:0.3rem;">Belum Ada Berita</p>
+        <p style="font-size:0.85rem;">Berita dan kegiatan pekon akan segera ditampilkan di sini oleh admin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYANAN -->
+<section id="layanan">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Administrasi</span>
+      <h3>Layanan Pekon</h3>
+      <p>Urus dokumen dan kebutuhan administrasi Anda di sini · Senin–Jumat 08.00–15.00 WIB</p>
+    </div>
+
+    <!-- TAB KATEGORI -->
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;">
+      <button class="tab-btn aktif-tab" onclick="tampilTab('semua',this)">🗂️ Semua</button>
+      <button class="tab-btn" onclick="tampilTab('keterangan',this)">📋 Surat Keterangan</button>
+      <button class="tab-btn" onclick="tampilTab('pengantar',this)">📨 Surat Pengantar</button>
+      <button class="tab-btn" onclick="tampilTab('kependudukan',this)">🪪 Kependudukan</button>
+    </div>
+
+    <style>
+      .tab-btn {
+        background: white; border: 2px solid #e5e7eb; color: var(--abu);
+        padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer;
+        font-size: 0.82rem; font-weight: 600; font-family: inherit;
+        transition: all 0.2s;
+      }
+      .tab-btn:hover { border-color: var(--hijau); color: var(--hijau); }
+      .tab-btn.aktif-tab { background: var(--hijau); color: white; border-color: var(--hijau); }
+      .kartu-layanan {
+        background: white; border-radius: 12px; padding: 1.2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        border: 2px solid transparent;
+        transition: all 0.25s; cursor: default;
+      }
+      .kartu-layanan:hover { border-color: var(--emas); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+      .kartu-layanan .ikon-l { font-size: 2rem; margin-bottom: 0.6rem; }
+      .kartu-layanan h4 { font-size: 0.92rem; font-weight: 700; color: var(--hijau); margin-bottom: 0.3rem; }
+      .kartu-layanan p { font-size: 0.78rem; color: var(--abu); line-height: 1.5; }
+      .kartu-layanan .syarat {
+        margin-top: 0.6rem; padding-top: 0.6rem;
+        border-top: 1px dashed #e5e7eb;
+        font-size: 0.73rem; color: #9ca3af;
+      }
+      .badge-kat {
+        display: inline-block; font-size: 0.65rem; font-weight: 700;
+        padding: 0.15rem 0.5rem; border-radius: 10px; margin-bottom: 0.5rem;
+        text-transform: uppercase; letter-spacing: 0.05em;
+      }
+      .kat-keterangan { background: #dcfce7; color: #166534; }
+      .kat-pengantar { background: #dbeafe; color: #1e40af; }
+      .kat-kependudukan { background: #fef3c7; color: #92400e; }
+      .kat-sosial { background: #fce7f3; color: #9d174d; }
+      .grid-layanan-baru {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      .item-layanan-wrap { transition: all 0.2s; }
+      .item-layanan-wrap.sembunyikan { display: none; }
+    </style>
+
+    <div class="grid-layanan-baru" id="grid-layanan">
+
+      <!-- SURAT KETERANGAN -->
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🏠</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Domisili</h4>
+          <p>Bukti bahwa warga berdomisili di Pekon Muara Jaya II</p>
+          <div class="syarat">📎 Syarat: KTP + KK asli</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🤲</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Tidak Mampu</h4>
+          <p>Untuk keperluan beasiswa, keringanan biaya pengobatan, dll</p>
+          <div class="syarat">📎 Syarat: KTP + KK + surat RT/RW</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🏪</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Usaha</h4>
+          <p>Bukti legalitas usaha warga di lingkungan pekon</p>
+          <div class="syarat">📎 Syarat: KTP + KK + foto usaha</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">💍</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Belum Menikah</h4>
+          <p>Untuk keperluan melamar kerja, beasiswa, atau pernikahan</p>
+          <div class="syarat">📎 Syarat: KTP + KK + surat RT</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🪦</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Kematian</h4>
+          <p>Pengantar pengurusan akta kematian ke Disdukcapil</p>
+          <div class="syarat">📎 Syarat: KTP almarhum + KK + surat RT</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="keterangan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🔄</div>
+          <span class="badge-kat kat-keterangan">Surat Keterangan</span>
+          <h4>Surat Keterangan Pindah</h4>
+          <p>Untuk warga yang akan pindah ke luar wilayah pekon</p>
+          <div class="syarat">📎 Syarat: KTP + KK asli</div>
+        </div>
+      </div>
+
+      <!-- SURAT PENGANTAR -->
+      <div class="item-layanan-wrap" data-kat="pengantar">
+        <div class="kartu-layanan">
+          <div class="ikon-l">👮</div>
+          <span class="badge-kat kat-pengantar">Surat Pengantar</span>
+          <h4>Surat Pengantar SKCK</h4>
+          <p>Pengantar ke Polsek untuk pembuatan Surat Keterangan Catatan Kepolisian</p>
+          <div class="syarat">📎 Syarat: KTP + KK + pas foto 4×6</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="pengantar">
+        <div class="kartu-layanan">
+          <div class="ikon-l">💒</div>
+          <span class="badge-kat kat-pengantar">Surat Pengantar</span>
+          <h4>Surat Pengantar Nikah</h4>
+          <p>Pengantar ke KUA untuk keperluan pernikahan</p>
+          <div class="syarat">📎 Syarat: KTP + KK kedua calon</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="pengantar">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🎓</div>
+          <span class="badge-kat kat-pengantar">Surat Pengantar</span>
+          <h4>Surat Pengantar Beasiswa</h4>
+          <p>Rekomendasi pekon untuk keperluan pengajuan beasiswa pendidikan</p>
+          <div class="syarat">📎 Syarat: KTP + KK + surat dari sekolah</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="pengantar">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🎉</div>
+          <span class="badge-kat kat-pengantar">Surat Pengantar</span>
+          <h4>Surat Izin Keramaian</h4>
+          <p>Izin mengadakan acara atau keramaian di lingkungan pekon</p>
+          <div class="syarat">📎 Syarat: KTP pemohon + proposal acara</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="pengantar">
+        <div class="kartu-layanan">
+          <div class="ikon-l">👶</div>
+          <span class="badge-kat kat-pengantar">Surat Pengantar</span>
+          <h4>Pengantar Akta Kelahiran</h4>
+          <p>Pengantar ke Disdukcapil untuk pembuatan akta kelahiran bayi</p>
+          <div class="syarat">📎 Syarat: surat lahir bidan + KTP + KK orang tua</div>
+        </div>
+      </div>
+
+      <!-- KEPENDUDUKAN -->
+      <div class="item-layanan-wrap" data-kat="kependudukan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">🪪</div>
+          <span class="badge-kat kat-kependudukan">Kependudukan</span>
+          <h4>Pengantar KTP</h4>
+          <p>Pengantar pembuatan KTP baru atau perubahan data KTP</p>
+          <div class="syarat">📎 Syarat: KK asli + akta kelahiran</div>
+        </div>
+      </div>
+
+      <div class="item-layanan-wrap" data-kat="kependudukan">
+        <div class="kartu-layanan">
+          <div class="ikon-l">📋</div>
+          <span class="badge-kat kat-kependudukan">Kependudukan</span>
+          <h4>Pengantar Kartu Keluarga</h4>
+          <p>Pengantar pembuatan KK baru, penambahan anggota, atau perubahan data</p>
+          <div class="syarat">📎 Syarat: KTP + KK lama + dokumen pendukung</div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <!-- INFO BAWAH -->
+    <div style="text-align:center;margin-top:2rem;padding:1rem;background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <p style="font-size:0.85rem;color:var(--abu);">📌 Semua layanan <strong>gratis</strong> · Jam pelayanan <strong>Senin–Jumat 08.00–15.00 WIB</strong></p>
+      <p style="font-size:0.82rem;color:var(--abu);margin-top:0.3rem;">Hubungi kami melalui WhatsApp atau datang langsung ke <strong>Kantor Pekon Muara Jaya II</strong></p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+function tampilTab(kat, elBtn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('aktif-tab'));
+  elBtn.classList.add('aktif-tab');
+  document.querySelectorAll('.item-layanan-wrap').forEach(function(el) {
+    if (kat === 'semua' || el.dataset.kat === kat) {
+      el.classList.remove('sembunyikan');
+    } else {
+      el.classList.add('sembunyikan');
+    }
+  });
+}
+</script>
+
+<!-- PENGUMUMAN -->
+<section id="pengumuman">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Penting</span>
+      <h3>Pengumuman Pekon</h3>
+      <p>Informasi penting untuk seluruh warga Pekon Muara Jaya II</p>
+    </div>
+    <div class="list-pengumuman" style="max-width:720px;margin:0 auto;" id="kontainer-pengumuman">
+      <div style="text-align:center;padding:3rem 1rem;background:rgba(255,255,255,0.1);border-radius:12px;color:rgba(255,255,255,0.8);">
+        <div style="font-size:2.5rem;margin-bottom:0.8rem;">📭</div>
+        <p style="font-weight:600;color:white;margin-bottom:0.3rem;">Belum Ada Pengumuman</p>
+        <p style="font-size:0.85rem;">Pengumuman penting dari pekon akan segera ditampilkan di sini oleh admin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOKUMENTASI -->
+<section id="dokumentasi" style="background:white;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Galeri</span>
+      <h3>Dokumentasi Kegiatan</h3>
+      <p>Rekam jejak kegiatan dan pembangunan Pekon Muara Jaya II</p>
+    </div>
+
+    <style>
+      /* SLIDESHOW */
+      .slide-wrapper {
+        position: relative; max-width: 800px; margin: 0 auto;
+        border-radius: 16px; overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        background: #0f1f14;
+      }
+      .slide-track {
+        display: flex; transition: transform 0.5s ease;
+      }
+      .slide-item {
+        min-width: 100%; position: relative;
+      }
+      .slide-gambar {
+        width: 100%; height: 420px; object-fit: cover;
+        display: block; background: #1a3a22;
+      }
+      .slide-kosong {
+        width: 100%; height: 420px;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #0d3d24, #1a5c38);
+        color: rgba(255,255,255,0.6); gap: 0.8rem;
+      }
+      .slide-kosong .ikon-kosong { font-size: 3.5rem; }
+      .slide-kosong p { font-size: 0.9rem; }
+      .slide-keterangan {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.75));
+        color: white; padding: 2rem 1.5rem 1.2rem;
+      }
+      .slide-keterangan h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+      .slide-keterangan p { font-size: 0.8rem; opacity: 0.8; }
+
+      /* TOMBOL NAVIGASI */
+      .slide-nav {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background: rgba(255,255,255,0.85); border: none; border-radius: 50%;
+        width: 42px; height: 42px; font-size: 1.1rem; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: background 0.2s;
+        z-index: 10;
+      }
+      .slide-nav:hover { background: white; }
+      .slide-prev { left: 1rem; }
+      .slide-next { right: 1rem; }
+
+      /* INDIKATOR DOT */
+      .slide-dots {
+        display: flex; justify-content: center; gap: 0.5rem;
+        margin-top: 1.2rem; flex-wrap: wrap;
+      }
+      .dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: #d1d5db; cursor: pointer; border: none;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .dot.aktif { background: var(--hijau); transform: scale(1.3); }
+
+      /* THUMBNAIL STRIP */
+      .thumb-strip {
+        display: flex; gap: 0.6rem; margin-top: 1rem;
+        overflow-x: auto; padding-bottom: 0.3rem;
+        justify-content: center; flex-wrap: wrap;
+      }
+      .thumb {
+        width: 72px; height: 54px; border-radius: 8px;
+        object-fit: cover; cursor: pointer; border: 3px solid transparent;
+        transition: border-color 0.2s; flex-shrink: 0;
+        background: #e5e7eb;
+      }
+      .thumb.aktif { border-color: var(--emas); }
+      .thumb-kosong {
+        width: 72px; height: 54px; border-radius: 8px;
+        background: #e5e7eb; display: flex; align-items: center;
+        justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+        cursor: pointer; border: 3px solid transparent;
+      }
+      .thumb-kosong.aktif { border-color: var(--emas); }
+
+      /* INFO SLIDE */
+      .slide-info-bar {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-top: 0.8rem; font-size: 0.82rem; color: var(--abu);
+      }
+    </style>
+
+    <!-- AREA SLIDESHOW -->
+    <div id="area-slideshow">
+      <!-- Tampil kosong dulu, diisi oleh JavaScript dari localStorage -->
+      <div class="slide-wrapper" id="slide-wrapper">
+        <div class="slide-track" id="slide-track">
+          <!-- slide dirender JS -->
+        </div>
+        <button class="slide-nav slide-prev" id="btn-prev" onclick="geserSlide(-1)">‹</button>
+        <button class="slide-nav slide-next" id="btn-next" onclick="geserSlide(1)">›</button>
+      </div>
+      <div class="slide-info-bar">
+        <div class="slide-dots" id="slide-dots"></div>
+        <span id="slide-counter" style="font-size:0.78rem;color:var(--abu);"></span>
+      </div>
+      <div class="thumb-strip" id="thumb-strip"></div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ===== DATA DOKUMENTASI =====
+const KUNCI_FOTO = 'pekon_dokumentasi';
+
+function ambilFoto() {
+  try {
+    const raw = localStorage.getItem(KUNCI_FOTO);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+let foto = ambilFoto();
+let slideAktif = 0;
+let autoSlide;
+
+function renderSlideshow() {
+  const track = document.getElementById('slide-track');
+  const dots = document.getElementById('slide-dots');
+  const thumbs = document.getElementById('thumb-strip');
+  const counter = document.getElementById('slide-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  if (!foto.length) {
+    track.innerHTML = `
+      <div class="slide-item">
+        <div class="slide-kosong">
+          <div class="ikon-kosong">📷</div>
+          <p>Belum ada foto dokumentasi</p>
+          <p style="font-size:0.78rem;">Admin dapat menambahkan foto melalui halaman admin</p>
+        </div>
+      </div>`;
+    dots.innerHTML = '';
+    thumbs.innerHTML = '';
+    counter.textContent = '';
+    btnPrev.style.display = 'none';
+    btnNext.style.display = 'none';
+    return;
+  }
+
+  btnPrev.style.display = 'flex';
+  btnNext.style.display = 'flex';
+
+  // Render slide
+  track.innerHTML = foto.map((f, i) => `
+    <div class="slide-item">
+      <img class="slide-gambar" src="${f.url}" alt="${f.judul}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+      />
+      <div class="slide-kosong" style="display:none;">
+        <div class="ikon-kosong">🖼️</div>
+        <p>Foto tidak dapat dimuat</p>
+      </div>
+      <div class="slide-keterangan">
+        <h4>${f.judul}</h4>
+        <p>${f.tanggal ? '📅 ' + f.tanggal : ''}${f.keterangan ? ' · ' + f.keterangan : ''}</p>
+      </div>
+    </div>`).join('');
+
+  // Render dots
+  dots.innerHTML = foto.map((_, i) =>
+    `<button class="dot ${i===slideAktif?'aktif':''}" onclick="keSlide(${i})"></button>`
+  ).join('');
+
+  // Render thumbnail
+  thumbs.innerHTML = foto.map((f, i) =>
+    `<img class="thumb ${i===slideAktif?'aktif':''}" src="${f.url}"
+      onclick="keSlide(${i})"
+      onerror="this.outerHTML='<div class=\\'thumb-kosong ${i===slideAktif?'aktif':''}\\'  onclick=\\'keSlide(${i})\\'>🖼️</div>'"
+    />`
+  ).join('');
+
+  counter.textContent = `${slideAktif + 1} / ${foto.length}`;
+  updatePosisi();
+  mulaiAutoSlide();
+}
+
+function updatePosisi() {
+  const track = document.getElementById('slide-track');
+  track.style.transform = `translateX(-${slideAktif * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i) =>
+    d.classList.toggle('aktif', i === slideAktif));
+  document.querySelectorAll('.thumb, .thumb-kosong').forEach((t,i) =>
+    t.classList.toggle('aktif', i === slideAktif));
+  const counter = document.getElementById('slide-counter');
+  if (counter) counter.textContent = foto.length ? `${slideAktif + 1} / ${foto.length}` : '';
+}
+
+function geserSlide(arah) {
+  if (!foto.length) return;
+  slideAktif = (slideAktif + arah + foto.length) % foto.length;
+  updatePosisi();
+  resetAutoSlide();
+}
+
+function keSlide(i) {
+  slideAktif = i;
+  updatePosisi();
+  resetAutoSlide();
+}
+
+function mulaiAutoSlide() {
+  clearInterval(autoSlide);
+  if (foto.length > 1) {
+    autoSlide = setInterval(() => {
+      slideAktif = (slideAktif + 1) % foto.length;
+      updatePosisi();
+    }, 4000);
+  }
+}
+
+function resetAutoSlide() { mulaiAutoSlide(); }
+
+// Jalankan saat halaman siap
+renderSlideshow();
+
+// Dengarkan perubahan dari admin.html (tab lain)
+window.addEventListener('storage', function(e) {
+  if (e.key === KUNCI_FOTO) {
+    foto = ambilFoto();
+    slideAktif = 0;
+    renderSlideshow();
+  }
+});
+</script>
+
+<!-- PERANGKAT DESA -->
+<section id="perangkat">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Struktur Organisasi</span>
+      <h3>Perangkat Pekon</h3>
+      <p>Mengenal para pelayan masyarakat Pekon Muara Jaya II</p>
+    </div>
+    <!-- PERANGKAT PEKON -->
+    <div style="margin-bottom:2rem;">
+      <h4 style="font-family:'Playfair Display',serif;color:var(--hijau);font-size:1.1rem;margin-bottom:1rem;padding-left:0.5rem;border-left:4px solid var(--emas);padding-left:0.8rem;">Pimpinan Pekon</h4>
+      <div class="grid-perangkat">
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Ardiyo Pratama Putra, A.Md.</h4>
+          <p>Peratin</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Mohammad Ahyar Hadinata, S.H.</h4>
+          <p>Juru Tulis / Sekretaris Pekon</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KAUR -->
+    <div style="margin-bottom:2rem;">
+      <h4 style="font-family:'Playfair Display',serif;color:var(--hijau);font-size:1.1rem;margin-bottom:1rem;border-left:4px solid var(--emas);padding-left:0.8rem;">Kepala Urusan (Kaur)</h4>
+      <div class="grid-perangkat">
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👩‍💼</div>
+          <h4>Siti Munawaroh, S.Pd.</h4>
+          <p>Kaur Keuangan</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Yusri</h4>
+          <p>Kaur Umum</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Dedi Irawan, S.E.</h4>
+          <p>Kaur Perencanaan</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KASI -->
+    <div style="margin-bottom:2rem;">
+      <h4 style="font-family:'Playfair Display',serif;color:var(--hijau);font-size:1.1rem;margin-bottom:1rem;border-left:4px solid var(--emas);padding-left:0.8rem;">Kepala Seksi (Kasi)</h4>
+      <div class="grid-perangkat">
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Toni Saputra</h4>
+          <p>Kasi Pemerintahan</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Yusuf Efendi</h4>
+          <p>Kasi Kesejahteraan</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍💼</div>
+          <h4>Wahyudi, S.Pd.</h4>
+          <p>Kasi Pelayanan</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEPALA PEMANGKU / KASUN -->
+    <div>
+      <h4 style="font-family:'Playfair Display',serif;color:var(--hijau);font-size:1.1rem;margin-bottom:1rem;border-left:4px solid var(--emas);padding-left:0.8rem;">Kepala Pemangku (Kasun)</h4>
+      <div class="grid-perangkat">
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Yandi Irawan Yasin</h4>
+          <p>KP Sinar Jaya</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Marizal</h4>
+          <p>KP Sinar Baru</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Ardi Susanto</h4>
+          <p>KP Pujaya 1</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Heri Nurhuda</h4>
+          <p>KP Pujaya 2</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Riyanto</h4>
+          <p>KP Inpres</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Dedi Anggara</h4>
+          <p>KP Muara Jaya</p>
+        </div>
+        <div class="kartu-perangkat">
+          <div class="foto-perangkat">👨‍🌾</div>
+          <h4>Marwandadi</h4>
+          <p>KP Simpang Raya</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Hubungi Kami</span>
+      <h3>Kontak & Lokasi</h3>
+      <p>Kami siap membantu Anda</p>
+    </div>
+    <div class="grid-kontak">
+      <div class="info-kontak">
+        <h4>Kantor Pekon Muara Jaya II</h4>
+        <div class="baris-kontak">
+          <div class="ikon-kontak">📍</div>
+          <p><strong>Alamat</strong>Jl. Pekon Muara Jaya II, Kecamatan Kebun Tebu, Kabupaten Lampung Barat, Lampung</p>
+        </div>
+        <div class="baris-kontak">
+          <div class="ikon-kontak">📞</div>
+          <p><strong>Telepon</strong>(0271) 123-4567</p>
+        </div>
+        <div class="baris-kontak">
+          <div class="ikon-kontak">📱</div>
+          <p><strong>WhatsApp</strong>0812-3456-7890</p>
+        </div>
+        <div class="baris-kontak">
+          <div class="ikon-kontak">📧</div>
+          <p><strong>Email</strong>pekonmuarajaya2kbt@gmail.com</p>
+        </div>
+        <div class="baris-kontak">
+          <div class="ikon-kontak">🕐</div>
+          <p><strong>Jam Pelayanan</strong>Senin–Jumat: 08.00–15.00 WIB</p>
+        </div>
+      </div>
+      <div>
+        <!-- TAB FORM -->
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+          <button onclick="gantiformTab('kontak',this)" id="tab-kontak"
+            style="flex:1;padding:0.6rem;border-radius:8px;border:2px solid var(--hijau);background:var(--hijau);color:white;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;">
+            📋 Form Kontak
+          </button>
+          <button onclick="gantiformTab('aspirasi',this)" id="tab-aspirasi"
+            style="flex:1;padding:0.6rem;border-radius:8px;border:2px solid #e5e7eb;background:white;color:var(--abu);font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;">
+            💬 Aspirasi Warga
+          </button>
+        </div>
+
+        <!-- FORM KONTAK -->
+        <form id="form-kontak" onsubmit="kirimKontak(event)" style="display:flex;flex-direction:column;gap:0.9rem;">
+          <input type="text" id="knt-nama" placeholder="Nama Lengkap" required />
+          <input type="tel" id="knt-telp" placeholder="Nomor WhatsApp / Telepon" />
+          <select id="knt-layanan">
+            <option value="">-- Pilih Jenis Layanan --</option>
+            <optgroup label="📋 Surat Keterangan">
+              <option>Surat Keterangan Domisili</option>
+              <option>Surat Keterangan Tidak Mampu</option>
+              <option>Surat Keterangan Usaha</option>
+              <option>Surat Keterangan Belum Menikah</option>
+              <option>Surat Keterangan Kematian</option>
+              <option>Surat Keterangan Pindah</option>
+            </optgroup>
+            <optgroup label="📨 Surat Pengantar">
+              <option>Surat Pengantar SKCK</option>
+              <option>Surat Pengantar Nikah</option>
+              <option>Surat Pengantar Beasiswa</option>
+              <option>Surat Izin Keramaian</option>
+              <option>Pengantar Akta Kelahiran</option>
+            </optgroup>
+            <optgroup label="🪪 Kependudukan">
+              <option>Pengantar KTP</option>
+              <option>Pengantar Kartu Keluarga</option>
+            </optgroup>
+            <option>Lainnya</option>
+          </select>
+          <textarea id="knt-pesan" placeholder="Tulis pesan atau pertanyaan Anda di sini..." style="min-height:100px;"></textarea>
+          <button type="submit" class="btn-primer" style="font-size:0.9rem;">Kirim Pesan ✉️</button>
+        </form>
+
+        <!-- FORM ASPIRASI -->
+        <form id="form-aspirasi" onsubmit="kirimAspirasi(event)" style="display:none;flex-direction:column;gap:0.9rem;">
+          <input type="text" id="asp-nama" placeholder="Nama Lengkap (atau tulis Anonim)" />
+          <input type="tel" id="asp-telp" placeholder="Nomor WhatsApp (opsional)" />
+          <select id="asp-kategori">
+            <option value="">-- Kategori Aspirasi --</option>
+            <option>Infrastruktur & Jalan</option>
+            <option>Pelayanan Pekon</option>
+            <option>Kesehatan</option>
+            <option>Pendidikan</option>
+            <option>Pertanian</option>
+            <option>Keamanan & Ketertiban</option>
+            <option>Ekonomi & Usaha</option>
+            <option>Lainnya</option>
+          </select>
+          <textarea id="asp-pesan" placeholder="Tulis aspirasi, saran, atau masukan Anda untuk pekon..." style="min-height:100px;" required></textarea>
+          <button type="submit" class="btn-primer" style="font-size:0.9rem;">Kirim Aspirasi 💬</button>
+        </form>
+      </div>
+
+      <script>
+      const KUNCI_INBOX_WEB = 'pekon_inbox';
+
+      function ambilInboxWeb() {
+        try { return JSON.parse(localStorage.getItem(KUNCI_INBOX_WEB)) || []; }
+        catch(e) { return []; }
+      }
+
+      function gantiformTab(tab, btn) {
+        const isKontak = tab === 'kontak';
+        document.getElementById('form-kontak').style.display = isKontak ? 'flex' : 'none';
+        document.getElementById('form-aspirasi').style.display = isKontak ? 'none' : 'flex';
+        document.getElementById('tab-kontak').style.background = isKontak ? 'var(--hijau)' : 'white';
+        document.getElementById('tab-kontak').style.color = isKontak ? 'white' : 'var(--abu)';
+        document.getElementById('tab-kontak').style.borderColor = isKontak ? 'var(--hijau)' : '#e5e7eb';
+        document.getElementById('tab-aspirasi').style.background = !isKontak ? '#7c3aed' : 'white';
+        document.getElementById('tab-aspirasi').style.color = !isKontak ? 'white' : 'var(--abu)';
+        document.getElementById('tab-aspirasi').style.borderColor = !isKontak ? '#7c3aed' : '#e5e7eb';
+      }
+
+      function kirimKontak(e) {
+        e.preventDefault();
+        const nama = document.getElementById('knt-nama').value.trim() || 'Tidak disebutkan';
+        const kontak = document.getElementById('knt-telp').value.trim();
+        const layanan = document.getElementById('knt-layanan').value;
+        const pesan = document.getElementById('knt-pesan').value.trim();
+        if (!pesan) { alert('Mohon isi pesan terlebih dahulu.'); return; }
+        const list = ambilInboxWeb();
+        list.unshift({
+          id: 'msg_' + Date.now(),
+          jenis: 'kontak', nama, kontak, layanan, pesan,
+          waktu: new Date().toLocaleString('id-ID'),
+          dibaca: false
+        });
+        localStorage.setItem(KUNCI_INBOX_WEB, JSON.stringify(list));
+        document.getElementById('form-kontak').reset();
+        alert('✅ Pesan Anda telah terkirim! Terima kasih, kami akan segera menindaklanjuti.');
+      }
+
+      function kirimAspirasi(e) {
+        e.preventDefault();
+        const nama = document.getElementById('asp-nama').value.trim() || 'Anonim';
+        const kontak = document.getElementById('asp-telp').value.trim();
+        const layanan = document.getElementById('asp-kategori').value;
+        const pesan = document.getElementById('asp-pesan').value.trim();
+        if (!pesan) { alert('Mohon isi aspirasi terlebih dahulu.'); return; }
+        const list = ambilInboxWeb();
+        list.unshift({
+          id: 'msg_' + Date.now(),
+          jenis: 'aspirasi', nama, kontak, layanan, pesan,
+          waktu: new Date().toLocaleString('id-ID'),
+          dibaca: false
+        });
+        localStorage.setItem(KUNCI_INBOX_WEB, JSON.stringify(list));
+        document.getElementById('form-aspirasi').reset();
+        alert('✅ Aspirasi Anda telah terkirim! Terima kasih atas masukan yang membangun.');
+      }
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <strong>Pemerintah Pekon Muara Jaya II</strong> · Kecamatan Kebun Tebu · Kabupaten Lampung Barat</p>
+  <p style="margin-top:0.4rem;">Melayani dengan Ikhlas, Membangun dengan Amanah 🌾</p>
+</footer>
+
+</body>
+</html>

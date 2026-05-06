@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – Pekon Muara Jaya II</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --hijau: #1a5c38; --hijau-muda: #2e7d52; --emas: #c9a84c;
+      --krem: #f5f0e8; --abu: #6b7280; --teks: #1a1a1a;
+      --merah: #dc2626; --biru: #2563eb; --sidebar: #0f3522;
+    }
+    body { font-family: 'Source Sans 3', sans-serif; background: #f0f4f0; color: var(--teks); }
+
+    /* ===== LOGIN ===== */
+    #layar-login {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #0d3d24, var(--hijau));
+    }
+    .kotak-login {
+      background: white; border-radius: 16px; padding: 2.5rem 2rem;
+      width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .kotak-login .logo { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .kotak-login h2 { font-family: 'Playfair Display', serif; color: var(--hijau); font-size: 1.4rem; }
+    .kotak-login p { color: var(--abu); font-size: 0.82rem; margin-bottom: 1.5rem; }
+    .kotak-login input {
+      width: 100%; padding: 0.8rem 1rem; border: 2px solid #e5e7eb;
+      border-radius: 8px; font-size: 0.95rem; margin-bottom: 0.8rem;
+      font-family: inherit; outline: none; transition: border-color 0.2s;
+    }
+    .kotak-login input:focus { border-color: var(--hijau); }
+    .btn-login {
+      width: 100%; background: var(--hijau); color: white; border: none;
+      padding: 0.85rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background 0.2s;
+    }
+    .btn-login:hover { background: var(--hijau-muda); }
+    .pesan-error { color: var(--merah); font-size: 0.82rem; margin-top: 0.5rem; display: none; }
+
+    /* ===== LAYOUT ADMIN ===== */
+    #layar-admin { display: none; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+      background: var(--sidebar); color: white; padding: 1.5rem 0;
+      z-index: 50; overflow-y: auto;
+    }
+    .sidebar-logo { padding: 0 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo .ikon { font-size: 1.8rem; }
+    .sidebar-logo h2 { font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-top: 0.3rem; line-height: 1.3; }
+    .sidebar-logo p { font-size: 0.7rem; opacity: 0.5; margin-top: 0.2rem; }
+
+    .sidebar-menu { padding: 1rem 0; }
+    .menu-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.4; padding: 0.8rem 1.2rem 0.3rem; }
+    .menu-item {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.7rem 1.2rem; cursor: pointer; transition: background 0.15s;
+      font-size: 0.88rem; font-weight: 600; opacity: 0.75;
+    }
+    .menu-item:hover { background: rgba(255,255,255,0.08); opacity: 1; }
+    .menu-item.aktif { background: rgba(201,168,76,0.2); opacity: 1; border-right: 3px solid var(--emas); color: var(--emas); }
+    .menu-item .ikon-menu { font-size: 1.1rem; width: 22px; text-align: center; }
+    .btn-logout {
+      margin: 1rem 1.2rem 0; width: calc(100% - 2.4rem);
+      background: rgba(220,38,38,0.15); color: #fca5a5; border: 1px solid rgba(220,38,38,0.3);
+      padding: 0.6rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
+      font-family: inherit; font-weight: 600; transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(220,38,38,0.3); }
+
+    /* KONTEN UTAMA */
+    .konten-admin { margin-left: 240px; padding: 2rem; min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      background: white; border-radius: 12px; padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .topbar h3 { font-family: 'Playfair Display', serif; color: var(--hijau); font-size: 1.3rem; }
+    .topbar-info { font-size: 0.8rem; color: var(--abu); }
+    .badge-admin { background: var(--hijau); color: white; font-size: 0.7rem; padding: 0.25rem 0.7rem; border-radius: 20px; font-weight: 700; }
+
+    /* PANEL */
+    .panel { display: none; }
+    .panel.aktif { display: block; }
+
+    /* KARTU STATISTIK */
+    .grid-stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-box {
+      background: white; border-radius: 12px; padding: 1.2rem;
+      text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-top: 3px solid var(--emas);
+    }
+    .stat-box .angka { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--hijau); font-weight: 700; }
+    .stat-box .label { font-size: 0.75rem; color: var(--abu); margin-top: 0.3rem; }
+
+    /* FORM EDITOR */
+    .kartu-editor {
+      background: white; border-radius: 12px; padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 1.2rem;
+    }
+    .kartu-editor h4 {
+      font-family: 'Playfair Display', serif; color: var(--hijau);
+      font-size: 1.05rem; margin-bottom: 1.2rem;
+      padding-bottom: 0.7rem; border-bottom: 2px solid var(--krem);
+    }
+    .form-baris { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
+    .form-baris.full { grid-template-columns: 1fr; }
+    .form-grup { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-grup label { font-size: 0.78rem; font-weight: 700; color: var(--hijau); text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-grup input, .form-grup textarea, .form-grup select {
+      padding: 0.65rem 0.9rem; border: 2px solid #e5e7eb; border-radius: 8px;
+      font-family: inherit; font-size: 0.9rem; outline: none;
+      transition: border-color 0.2s; background: #fafafa;
+    }
+    .form-grup input:focus, .form-grup textarea:focus, .form-grup select:focus { border-color: var(--hijau); background: white; }
+    .form-grup textarea { resize: vertical; min-height: 80px; }
+
+    /* TOMBOL */
+    .baris-tombol { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; }
+    .btn { padding: 0.6rem 1.3rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 700; font-family: inherit; transition: all 0.2s; }
+    .btn-simpan { background: var(--hijau); color: white; }
+    .btn-simpan:hover { background: var(--hijau-muda); transform: translateY(-1px); }
+    .btn-tambah { background: var(--emas); color: #1a1a1a; }
+    .btn-tambah:hover { opacity: 0.85; }
+    .btn-hapus { background: #fee2e2; color: var(--merah); }
+    .btn-hapus:hover { background: var(--merah); color: white; }
+    .btn-batal { background: #f3f4f6; color: var(--abu); }
+
+    /* DAFTAR ITEM */
+    .daftar-item { display: flex; flex-direction: column; gap: 0.7rem; }
+    .item-row {
+      background: var(--krem); border-radius: 10px; padding: 0.9rem 1rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+    }
+    .item-row-info h5 { font-size: 0.9rem; font-weight: 700; color: var(--hijau); }
+    .item-row-info p { font-size: 0.78rem; color: var(--abu); margin-top: 0.2rem; line-height: 1.4; }
+    .item-row-info .tgl { font-size: 0.7rem; background: var(--emas); color: #1a1a1a; padding: 0.15rem 0.5rem; border-radius: 5px; font-weight: 700; display: inline-block; margin-bottom: 0.3rem; }
+    .item-aksi { display: flex; gap: 0.4rem; flex-shrink: 0; }
+    .btn-kecil { padding: 0.3rem 0.7rem; font-size: 0.75rem; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; }
+    .btn-edit-kecil { background: #dbeafe; color: var(--biru); }
+    .btn-hapus-kecil { background: #fee2e2; color: var(--merah); }
+
+    /* NOTIFIKASI */
+    .notif {
+      position: fixed; top: 1.5rem; right: 1.5rem; z-index: 999;
+      background: var(--hijau); color: white; padding: 0.8rem 1.3rem;
+      border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2); opacity: 0;
+      transform: translateY(-10px); transition: all 0.3s; pointer-events: none;
+    }
+    .notif.tampil { opacity: 1; transform: translateY(0); }
+
+    /* PRATINJAU */
+    .pratinjau-bar {
+      background: #1e293b; color: #94a3b8; font-size: 0.78rem;
+      padding: 0.5rem 1rem; border-radius: 8px; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .pratinjau-bar a { color: var(--emas); text-decoration: none; font-weight: 600; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar { width: 200px; }
+      .konten-admin { margin-left: 200px; padding: 1rem; }
+      .form-baris { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 580px) {
+      .sidebar { display: none; }
+      .konten-admin { margin-left: 0; }
+    }
+
+    .divider { border: none; border-top: 2px solid var(--krem); margin: 1.2rem 0; }
+    .teks-abu { color: var(--abu); font-size: 0.82rem; }
+    .tips { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.8rem; color: #92400e; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- ===== NOTIFIKASI ===== -->
+<div class="notif" id="notif">✅ Tersimpan!</div>
+
+<!-- ===== LAYAR LOGIN ===== -->
+<div id="layar-login">
+  <div class="kotak-login">
+    <div class="logo">🌾</div>
+    <h2>Panel Admin</h2>
+    <p>Pekon Muara Jaya II – Kecamatan Kebun Tebu</p>
+    <input type="text" id="inp-user" placeholder="Nama pengguna" />
+    <input type="password" id="inp-pass" placeholder="Kata sandi" onkeydown="if(event.key==='Enter')login()" />
+    <button class="btn-login" onclick="login()">Masuk →</button>
+    <div class="pesan-error" id="pesan-error">❌ Nama pengguna atau kata sandi salah</div>
+    <p style="margin-top:1rem;font-size:0.72rem;color:#9ca3af;">Default: admin / pekon2024</p>
+  </div>
+</div>
+
+<!-- ===== LAYAR ADMIN ===== -->
+<div id="layar-admin">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="ikon">🌾</div>
+      <h2>Admin Pekon Muara Jaya II</h2>
+      <p>Panel Pengelola Website</p>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-label">Menu Utama</div>
+      <div class="menu-item aktif" onclick="bukaPanel('beranda')">
+        <span class="ikon-menu">🏠</span> Beranda
+      </div>
+      <div class="menu-label">Konten</div>
+      <div class="menu-item" onclick="bukaPanel('berita')">
+        <span class="ikon-menu">📰</span> Berita & Kegiatan
+      </div>
+      <div class="menu-item" onclick="bukaPanel('pengumuman')">
+        <span class="ikon-menu">📢</span> Pengumuman
+      </div>
+      <div class="menu-item" onclick="bukaPanel('dokumentasi')">
+        <span class="ikon-menu">📷</span> Dokumentasi Foto
+      </div>
+      <div class="menu-item" onclick="bukaPanel('inbox')">
+        <span class="ikon-menu">📬</span> Inbox Pesan
+        <span id="badge-inbox" style="display:none;background:#dc2626;color:white;font-size:0.65rem;font-weight:700;padding:0.1rem 0.45rem;border-radius:10px;margin-left:auto;">0</span>
+      </div>
+      <div class="menu-label">Pengaturan</div>
+      <div class="menu-item" onclick="bukaPanel('statistik')">
+        <span class="ikon-menu">📊</span> Statistik Pekon
+      </div>
+      <div class="menu-item" onclick="bukaPanel('kontak')">
+        <span class="ikon-menu">📞</span> Info Kontak
+      </div>
+      <div class="menu-item" onclick="bukaPanel('hero')">
+        <span class="ikon-menu">🖼️</span> Tampilan Utama
+      </div>
+      <div class="menu-item" onclick="bukaPanel('sandi')">
+        <span class="ikon-menu">🔐</span> Ganti Kata Sandi
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">🚪 Keluar</button>
+  </div>
+
+  <!-- KONTEN UTAMA -->
+  <div class="konten-admin">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h3 id="judul-panel">🏠 Beranda</h3>
+        <div class="topbar-info" id="waktu-admin"></div>
+      </div>
+      <span class="badge-admin">👤 Admin</span>
+    </div>
+
+    <div class="pratinjau-bar">
+      💡 Setelah menyimpan perubahan, <a href="pekon-muara-jaya-ii.html" target="_blank">klik di sini untuk melihat website</a> &nbsp;(buka di tab baru)
+    </div>
+
+    <!-- ===== PANEL BERANDA ===== -->
+    <div class="panel aktif" id="panel-beranda">
+      <div class="grid-stat">
+        <div class="stat-box">
+          <div class="angka" id="stat-berita">3</div>
+          <div class="label">Berita Aktif</div>
+        </div>
+        <div class="stat-box">
+          <div class="angka" id="stat-pengumuman">3</div>
+          <div class="label">Pengumuman</div>
+        </div>
+        <div class="stat-box">
+          <div class="angka">1.755</div>
+          <div class="label">Jiwa Penduduk</div>
+        </div>
+        <div class="stat-box">
+          <div class="angka">512</div>
+          <div class="label">Kepala Keluarga</div>
+        </div>
+      </div>
+      <div class="kartu-editor">
+        <h4>📋 Panduan Singkat Penggunaan Admin</h4>
+        <div class="tips">💡 <strong>Tips:</strong> Setiap perubahan yang Anda simpan akan langsung terlihat di website pekon.</div>
+        <div style="display:flex;flex-direction:column;gap:0.7rem;">
+          <div class="item-row">
+            <div class="item-row-info">
+              <h5>📰 Kelola Berita & Kegiatan</h5>
+              <p>Tambah, edit, atau hapus berita dan kegiatan pekon yang tampil di halaman utama website.</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-row-info">
+              <h5>📢 Kelola Pengumuman</h5>
+              <p>Buat pengumuman penting untuk warga seperti jadwal BLT, gotong royong, dan lainnya.</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-row-info">
+              <h5>📊 Perbarui Statistik Pekon</h5>
+              <p>Ubah data jumlah penduduk, KK, laki-laki, perempuan yang tampil di website.</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-row-info">
+              <h5>📞 Perbarui Info Kontak</h5>
+              <p>Ganti nomor telepon, WhatsApp, email, dan jam pelayanan kantor pekon.</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-row-info">
+              <h5>🖼️ Ubah Tampilan Utama</h5>
+              <p>Edit judul sambutan dan kalimat pembuka di bagian atas (hero) website.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL BERITA ===== -->
+    <div class="panel" id="panel-berita">
+      <div class="kartu-editor">
+        <h4>➕ Tambah Berita Baru</h4>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Judul Berita</label>
+            <input type="text" id="berita-judul" placeholder="cth: Gotong Royong Dusun Sinar Jaya"/>
+          </div>
+          <div class="form-grup">
+            <label>Tanggal</label>
+            <input type="date" id="berita-tgl"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Isi Berita (ringkasan)</label>
+            <textarea id="berita-isi" placeholder="Tulis ringkasan berita di sini..."></textarea>
+          </div>
+        </div>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Ikon / Emoji</label>
+            <select id="berita-ikon">
+              <option value="📰">📰 Umum</option>
+              <option value="🏗️">🏗️ Pembangunan</option>
+              <option value="💉">💉 Kesehatan</option>
+              <option value="🌱">🌱 Pertanian</option>
+              <option value="🎓">🎓 Pendidikan</option>
+              <option value="🤝">🤝 Sosial</option>
+              <option value="💰">💰 Keuangan</option>
+              <option value="🏆">🏆 Prestasi</option>
+              <option value="🎉">🎉 Perayaan</option>
+            </select>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-tambah" onclick="tambahBerita()">➕ Tambah Berita</button>
+          <button class="btn btn-batal" onclick="resetFormBerita()">Reset</button>
+        </div>
+      </div>
+
+      <div class="kartu-editor">
+        <h4>📋 Daftar Berita</h4>
+        <div class="daftar-item" id="daftar-berita"></div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL PENGUMUMAN ===== -->
+    <div class="panel" id="panel-pengumuman">
+      <div class="kartu-editor">
+        <h4>➕ Tambah Pengumuman Baru</h4>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Judul Pengumuman</label>
+            <input type="text" id="peng-judul" placeholder="cth: Jadwal Pengambilan BLT"/>
+          </div>
+          <div class="form-grup">
+            <label>Tanggal</label>
+            <input type="date" id="peng-tgl"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Isi Pengumuman</label>
+            <textarea id="peng-isi" placeholder="Tulis detail pengumuman di sini..."></textarea>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-tambah" onclick="tambahPengumuman()">➕ Tambah Pengumuman</button>
+          <button class="btn btn-batal" onclick="resetFormPeng()">Reset</button>
+        </div>
+      </div>
+
+      <div class="kartu-editor">
+        <h4>📋 Daftar Pengumuman</h4>
+        <div class="daftar-item" id="daftar-peng"></div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL DOKUMENTASI ===== -->
+    <div class="panel" id="panel-dokumentasi">
+      <div class="kartu-editor">
+        <h4>➕ Tambah Foto Dokumentasi</h4>
+        <div class="tips">💡 Masukkan link (URL) foto dari Google Drive, Google Photos, atau layanan penyimpanan foto lainnya.</div>
+
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Judul Foto</label>
+            <input type="text" id="foto-judul" placeholder="cth: Gotong Royong Dusun Sinar Jaya"/>
+          </div>
+        </div>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Tanggal Kegiatan</label>
+            <input type="date" id="foto-tgl"/>
+          </div>
+          <div class="form-grup">
+            <label>Keterangan (opsional)</label>
+            <input type="text" id="foto-ket" placeholder="cth: Dihadiri 80 warga"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Link URL Foto</label>
+            <input type="url" id="foto-url" placeholder="https://drive.google.com/... atau https://..."/>
+          </div>
+        </div>
+
+        <!-- PREVIEW -->
+        <div id="foto-preview" style="display:none;margin:0.8rem 0;">
+          <p style="font-size:0.78rem;color:var(--abu);margin-bottom:0.4rem;">Pratinjau foto:</p>
+          <img id="foto-preview-img" src="" alt="preview"
+            style="max-width:100%;max-height:200px;border-radius:10px;object-fit:cover;border:2px solid #e5e7eb;"
+            onerror="document.getElementById('foto-preview-err').style.display='block';this.style.display='none'"
+          />
+          <p id="foto-preview-err" style="display:none;color:#dc2626;font-size:0.8rem;">⚠️ Foto tidak dapat dimuat. Pastikan link sudah benar dan foto bisa diakses publik.</p>
+        </div>
+
+        <div class="baris-tombol">
+          <button class="btn btn-batal" onclick="previewFoto()">👁️ Pratinjau</button>
+          <button class="btn btn-tambah" onclick="tambahFoto()">➕ Tambah Foto</button>
+          <button class="btn btn-batal" onclick="resetFormFoto()">Reset</button>
+        </div>
+
+        <div style="margin-top:1rem;padding:0.8rem 1rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:0.8rem;color:#1e40af;">
+          <strong>📌 Cara mendapatkan link foto dari Google Drive:</strong><br>
+          1. Upload foto ke Google Drive<br>
+          2. Klik kanan foto → Bagikan → Ubah ke "Siapa saja yang memiliki link"<br>
+          3. Salin link lalu tempel di kolom di atas
+        </div>
+      </div>
+
+      <div class="kartu-editor">
+        <h4>🖼️ Daftar Foto Dokumentasi (<span id="jml-foto">0</span> foto)</h4>
+        <div id="daftar-foto" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL INBOX ===== -->
+    <div class="panel" id="panel-inbox">
+      <div class="grid-stat" style="margin-bottom:1.2rem;">
+        <div class="stat-box">
+          <div class="angka" id="inbox-total">0</div>
+          <div class="label">Total Pesan</div>
+        </div>
+        <div class="stat-box" style="border-top-color:#dc2626;">
+          <div class="angka" style="color:#dc2626;" id="inbox-belum">0</div>
+          <div class="label">Belum Dibaca</div>
+        </div>
+        <div class="stat-box" style="border-top-color:#2563eb;">
+          <div class="angka" style="color:#2563eb;" id="inbox-kontak">0</div>
+          <div class="label">Dari Form Kontak</div>
+        </div>
+        <div class="stat-box" style="border-top-color:#7c3aed;">
+          <div class="angka" style="color:#7c3aed;" id="inbox-aspirasi">0</div>
+          <div class="label">Aspirasi Warga</div>
+        </div>
+      </div>
+
+      <div class="kartu-editor">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;">
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="btn-kecil btn-edit-kecil" id="filter-semua" onclick="filterInbox('semua',this)">📬 Semua</button>
+            <button class="btn-kecil" style="background:#fee2e2;color:#dc2626;" id="filter-belum" onclick="filterInbox('belum',this)">🔴 Belum Dibaca</button>
+            <button class="btn-kecil btn-edit-kecil" id="filter-kontak" onclick="filterInbox('kontak',this)">📋 Form Kontak</button>
+            <button class="btn-kecil" style="background:#ede9fe;color:#7c3aed;" id="filter-aspirasi" onclick="filterInbox('aspirasi',this)">💬 Aspirasi</button>
+          </div>
+          <button class="btn btn-hapus" onclick="hapusSemuaPesan()" style="font-size:0.78rem;padding:0.4rem 0.9rem;">🗑️ Hapus Semua</button>
+        </div>
+        <div id="daftar-inbox" style="display:flex;flex-direction:column;gap:0.7rem;"></div>
+
+        <!-- DETAIL PESAN -->
+        <div id="detail-pesan" style="display:none;margin-top:1.2rem;background:var(--krem);border-radius:12px;padding:1.2rem;border-left:4px solid var(--emas);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
+            <h4 id="detail-nama" style="color:var(--hijau);font-size:1rem;"></h4>
+            <button onclick="tutupDetail()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--abu);">✕</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.8rem;font-size:0.82rem;color:var(--abu);">
+            <span id="detail-kontak-info"></span>
+            <span id="detail-jenis"></span>
+            <span id="detail-layanan"></span>
+            <span id="detail-waktu"></span>
+          </div>
+          <div style="background:white;border-radius:8px;padding:1rem;font-size:0.88rem;line-height:1.6;">
+            <strong style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--abu);">Isi Pesan:</strong>
+            <p id="detail-isi" style="margin-top:0.4rem;"></p>
+          </div>
+          <div class="baris-tombol" style="margin-top:0.8rem;">
+            <button class="btn btn-hapus" onclick="hapusPesanDariDetail()">🗑️ Hapus Pesan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-statistik">
+      <div class="kartu-editor">
+        <h4>📊 Perbarui Data Statistik Pekon</h4>
+        <div class="tips">💡 Data ini tampil di bagian angka-angka besar di website pekon.</div>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Jumlah Penduduk (Jiwa)</label>
+            <input type="number" id="stat-jiwa" value="1755"/>
+          </div>
+          <div class="form-grup">
+            <label>Jumlah KK</label>
+            <input type="number" id="stat-kk" value="512"/>
+          </div>
+        </div>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Laki-laki</label>
+            <input type="number" id="stat-laki" value="860"/>
+          </div>
+          <div class="form-grup">
+            <label>Perempuan</label>
+            <input type="number" id="stat-perempuan" value="895"/>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-simpan" onclick="simpanStatistik()">💾 Simpan Statistik</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL KONTAK ===== -->
+    <div class="panel" id="panel-kontak">
+      <div class="kartu-editor">
+        <h4>📞 Perbarui Informasi Kontak</h4>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Nomor Telepon</label>
+            <input type="text" id="kontak-telp" placeholder="cth: (0728) 123-4567"/>
+          </div>
+          <div class="form-grup">
+            <label>Nomor WhatsApp</label>
+            <input type="text" id="kontak-wa" placeholder="cth: 0812-3456-7890"/>
+          </div>
+        </div>
+        <div class="form-baris">
+          <div class="form-grup">
+            <label>Email</label>
+            <input type="email" id="kontak-email" value="pekonmuarajaya2kbt@gmail.com"/>
+          </div>
+          <div class="form-grup">
+            <label>Jam Pelayanan</label>
+            <input type="text" id="kontak-jam" value="Senin–Jumat: 08.00–15.00 WIB"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Alamat Lengkap</label>
+            <textarea id="kontak-alamat" style="min-height:60px">Jl. Pekon Muara Jaya II, Kecamatan Kebun Tebu, Kabupaten Lampung Barat, Lampung</textarea>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-simpan" onclick="simpanKontak()">💾 Simpan Info Kontak</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL HERO / TAMPILAN UTAMA ===== -->
+    <div class="panel" id="panel-hero">
+      <div class="kartu-editor">
+        <h4>🖼️ Edit Tampilan Bagian Atas Website (Hero)</h4>
+        <div class="tips">💡 Bagian ini adalah tulisan besar yang pertama kali dilihat pengunjung website.</div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Judul Utama (baris 1)</label>
+            <input type="text" id="hero-judul1" value="Melayani Warga"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Judul Utama (baris 2)</label>
+            <input type="text" id="hero-judul2" value="dengan Sepenuh Hati"/>
+          </div>
+        </div>
+        <div class="form-baris full">
+          <div class="form-grup">
+            <label>Kalimat Sambutan</label>
+            <textarea id="hero-sub">Selamat datang di website resmi Pekon Muara Jaya II. Temukan informasi pekon, layanan administrasi, dan pengumuman terkini di sini.</textarea>
+          </div>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-simpan" onclick="simpanHero()">💾 Simpan Tampilan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL GANTI SANDI ===== -->
+    <div class="panel" id="panel-sandi">
+      <div class="kartu-editor" style="max-width:420px;">
+        <h4>🔐 Ganti Kata Sandi Admin</h4>
+        <div class="tips">⚠️ Harap ingat kata sandi baru Anda. Jika lupa, harus reset ulang halaman ini.</div>
+        <div class="form-grup" style="margin-bottom:0.8rem;">
+          <label>Kata Sandi Lama</label>
+          <input type="password" id="sandi-lama" placeholder="Masukkan kata sandi saat ini"/>
+        </div>
+        <div class="form-grup" style="margin-bottom:0.8rem;">
+          <label>Kata Sandi Baru</label>
+          <input type="password" id="sandi-baru" placeholder="Minimal 6 karakter"/>
+        </div>
+        <div class="form-grup" style="margin-bottom:0.8rem;">
+          <label>Ulangi Kata Sandi Baru</label>
+          <input type="password" id="sandi-ulang" placeholder="Ketik ulang kata sandi baru"/>
+        </div>
+        <div class="baris-tombol">
+          <button class="btn btn-simpan" onclick="gantiSandi()">🔐 Simpan Kata Sandi</button>
+        </div>
+        <div id="pesan-sandi" style="margin-top:0.7rem;font-size:0.82rem;"></div>
+      </div>
+    </div>
+
+  </div><!-- /konten-admin -->
+</div><!-- /layar-admin -->
+
+<script>
+// ===== DATA DEFAULT =====
+const KUNCI = 'pekon_muarajaya2_data';
+
+function ambilData() {
+  const raw = localStorage.getItem(KUNCI);
+  if (raw) return JSON.parse(raw);
+  return {
+    sandi: 'pekon2024',
+    berita: [
+      { id: 1, judul: 'Pembangunan Jalan Dusun Selatan Dimulai', tgl: '2026-04-28', isi: 'Proyek perbaikan jalan sepanjang 800 meter di Dusun Selatan resmi dimulai dengan anggaran Dana Pekon 2026.', ikon: '🏗️' },
+      { id: 2, judul: 'Posyandu Rutin Bulan April Berjalan Lancar', tgl: '2026-04-20', isi: 'Sebanyak 148 balita dan ibu hamil mendapatkan pelayanan kesehatan di Posyandu Mawar dan Melati.', ikon: '💉' },
+      { id: 3, judul: 'Pelatihan Pertanian Organik untuk Petani Pekon', tgl: '2026-04-15', isi: 'BPP Kecamatan mengadakan pelatihan pertanian organik bagi 40 petani pekon untuk meningkatkan hasil panen.', ikon: '🌱' }
+    ],
+    pengumuman: [
+      { id: 1, judul: 'Jadwal Pengambilan BLT Dana Pekon', tgl: '2026-05-01', isi: 'Pengambilan BLT bulan Mei dilaksanakan pada 5–7 Mei 2026 di Balai Pekon. Harap membawa KTP asli.' },
+      { id: 2, judul: 'Gotong Royong Bersih Pekon', tgl: '2026-04-28', isi: 'Seluruh warga diharapkan hadir pada kegiatan gotong royong Minggu, 10 Mei 2026 pukul 07.00 WIB.' },
+      { id: 3, judul: 'Pembukaan Pendaftaran BUMPekon 2026', tgl: '2026-04-20', isi: 'Warga yang berminat bergabung dalam program BUMPekon dapat mendaftarkan diri ke kantor pekon hingga 15 Mei 2026.' }
+    ],
+    statistik: { jiwa: 1755, kk: 512, laki: 860, perempuan: 895 },
+    kontak: {
+      telp: '(0728) 123-4567', wa: '0812-3456-7890',
+      email: 'pekonmuarajaya2kbt@gmail.com',
+      jam: 'Senin–Jumat: 08.00–15.00 WIB',
+      alamat: 'Jl. Pekon Muara Jaya II, Kecamatan Kebun Tebu, Kabupaten Lampung Barat, Lampung'
+    },
+    hero: {
+      judul1: 'Melayani Warga',
+      judul2: 'dengan Sepenuh Hati',
+      sub: 'Selamat datang di website resmi Pekon Muara Jaya II. Temukan informasi pekon, layanan administrasi, dan pengumuman terkini di sini.'
+    }
+  };
+}
+
+function simpanData(data) { localStorage.setItem(KUNCI, JSON.stringify(data)); }
+
+let data = ambilData();
+let idBeritaEdit = null;
+let idPengEdit = null;
+
+// ===== LOGIN =====
+function login() {
+  const user = document.getElementById('inp-user').value.trim();
+  const pass = document.getElementById('inp-pass').value;
+  const err = document.getElementById('pesan-error');
+  if (user === 'admin' && pass === data.sandi) {
+    document.getElementById('layar-login').style.display = 'none';
+    document.getElementById('layar-admin').style.display = 'block';
+    muatSemua();
+    updateWaktu();
+    setInterval(updateWaktu, 1000);
+    err.style.display = 'none';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('inp-pass').value = '';
+  }
+}
+
+function logout() {
+  if (confirm('Yakin ingin keluar dari panel admin?')) {
+    document.getElementById('layar-admin').style.display = 'none';
+    document.getElementById('layar-login').style.display = 'flex';
+    document.getElementById('inp-pass').value = '';
+  }
+}
+
+// ===== PANEL =====
+const judulPanel = {
+  beranda: '🏠 Beranda', berita: '📰 Berita & Kegiatan',
+  pengumuman: '📢 Pengumuman', dokumentasi: '📷 Dokumentasi Foto',
+  inbox: '📬 Inbox Pesan', statistik: '📊 Statistik Pekon',
+  kontak: '📞 Info Kontak', hero: '🖼️ Tampilan Utama', sandi: '🔐 Ganti Kata Sandi'
+};
+
+function bukaPanel(nama) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('aktif'));
+  document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('aktif'));
+  document.getElementById('panel-' + nama).classList.add('aktif');
+  event.currentTarget.classList.add('aktif');
+  document.getElementById('judul-panel').textContent = judulPanel[nama];
+}
+
+// ===== WAKTU =====
+function updateWaktu() {
+  const now = new Date();
+  const opt = { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' };
+  document.getElementById('waktu-admin').textContent = now.toLocaleDateString('id-ID', opt);
+}
+
+// ===== FORMAT TANGGAL =====
+function formatTgl(str) {
+  if (!str) return '-';
+  const [y,m,d] = str.split('-');
+  const bln = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  return `${parseInt(d)} ${bln[parseInt(m)-1]} ${y}`;
+}
+
+// ===== NOTIFIKASI =====
+function tampilNotif(pesan = '✅ Tersimpan!') {
+  const n = document.getElementById('notif');
+  n.textContent = pesan; n.classList.add('tampil');
+  setTimeout(() => n.classList.remove('tampil'), 2500);
+}
+
+// ===== MUAT SEMUA =====
+function muatSemua() {
+  muatBerita(); muatPengumuman(); muatStatistik(); muatKontak(); muatHero(); muatFoto(); muatInbox();
+  document.getElementById('stat-berita').textContent = data.berita.length;
+  document.getElementById('stat-pengumuman').textContent = data.pengumuman.length;
+}
+
+// ===== BERITA =====
+function muatBerita() {
+  const el = document.getElementById('daftar-berita');
+  if (!data.berita.length) { el.innerHTML = '<p class="teks-abu">Belum ada berita.</p>'; return; }
+  el.innerHTML = data.berita.map(b => `
+    <div class="item-row">
+      <div class="item-row-info">
+        <span class="tgl">${formatTgl(b.tgl)}</span>
+        <h5>${b.ikon} ${b.judul}</h5>
+        <p>${b.isi}</p>
+      </div>
+      <div class="item-aksi">
+        <button class="btn-kecil btn-edit-kecil" onclick="editBerita(${b.id})">✏️ Edit</button>
+        <button class="btn-kecil btn-hapus-kecil" onclick="hapusBerita(${b.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('stat-berita').textContent = data.berita.length;
+}
+
+function tambahBerita() {
+  const judul = document.getElementById('berita-judul').value.trim();
+  const tgl = document.getElementById('berita-tgl').value;
+  const isi = document.getElementById('berita-isi').value.trim();
+  const ikon = document.getElementById('berita-ikon').value;
+  if (!judul || !tgl || !isi) { alert('Harap isi semua kolom!'); return; }
+
+  if (idBeritaEdit !== null) {
+    const idx = data.berita.findIndex(b => b.id === idBeritaEdit);
+    if (idx > -1) data.berita[idx] = { ...data.berita[idx], judul, tgl, isi, ikon };
+    idBeritaEdit = null;
+    document.querySelector('#panel-berita .btn-tambah').textContent = '➕ Tambah Berita';
+  } else {
+    const idBaru = Date.now();
+    data.berita.unshift({ id: idBaru, judul, tgl, isi, ikon });
+  }
+  simpanData(data); muatBerita(); resetFormBerita(); tampilNotif('✅ Berita disimpan!');
+}
+
+function editBerita(id) {
+  const b = data.berita.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('berita-judul').value = b.judul;
+  document.getElementById('berita-tgl').value = b.tgl;
+  document.getElementById('berita-isi').value = b.isi;
+  document.getElementById('berita-ikon').value = b.ikon;
+  idBeritaEdit = id;
+  document.querySelector('#panel-berita .btn-tambah').textContent = '💾 Simpan Perubahan';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hapusBerita(id) {
+  if (!confirm('Hapus berita ini?')) return;
+  data.berita = data.berita.filter(b => b.id !== id);
+  simpanData(data); muatBerita(); tampilNotif('🗑️ Berita dihapus');
+}
+
+function resetFormBerita() {
+  ['berita-judul','berita-tgl','berita-isi'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('berita-ikon').value = '📰';
+  idBeritaEdit = null;
+  document.querySelector('#panel-berita .btn-tambah').textContent = '➕ Tambah Berita';
+}
+
+// ===== PENGUMUMAN =====
+function muatPengumuman() {
+  const el = document.getElementById('daftar-peng');
+  if (!data.pengumuman.length) { el.innerHTML = '<p class="teks-abu">Belum ada pengumuman.</p>'; return; }
+  el.innerHTML = data.pengumuman.map(p => `
+    <div class="item-row">
+      <div class="item-row-info">
+        <span class="tgl">${formatTgl(p.tgl)}</span>
+        <h5>📢 ${p.judul}</h5>
+        <p>${p.isi}</p>
+      </div>
+      <div class="item-aksi">
+        <button class="btn-kecil btn-edit-kecil" onclick="editPeng(${p.id})">✏️ Edit</button>
+        <button class="btn-kecil btn-hapus-kecil" onclick="hapusPeng(${p.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('stat-pengumuman').textContent = data.pengumuman.length;
+}
+
+function tambahPengumuman() {
+  const judul = document.getElementById('peng-judul').value.trim();
+  const tgl = document.getElementById('peng-tgl').value;
+  const isi = document.getElementById('peng-isi').value.trim();
+  if (!judul || !tgl || !isi) { alert('Harap isi semua kolom!'); return; }
+
+  if (idPengEdit !== null) {
+    const idx = data.pengumuman.findIndex(p => p.id === idPengEdit);
+    if (idx > -1) data.pengumuman[idx] = { ...data.pengumuman[idx], judul, tgl, isi };
+    idPengEdit = null;
+    document.querySelector('#panel-pengumuman .btn-tambah').textContent = '➕ Tambah Pengumuman';
+  } else {
+    data.pengumuman.unshift({ id: Date.now(), judul, tgl, isi });
+  }
+  simpanData(data); muatPengumuman(); resetFormPeng(); tampilNotif('✅ Pengumuman disimpan!');
+}
+
+function editPeng(id) {
+  const p = data.pengumuman.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('peng-judul').value = p.judul;
+  document.getElementById('peng-tgl').value = p.tgl;
+  document.getElementById('peng-isi').value = p.isi;
+  idPengEdit = id;
+  document.querySelector('#panel-pengumuman .btn-tambah').textContent = '💾 Simpan Perubahan';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hapusPeng(id) {
+  if (!confirm('Hapus pengumuman ini?')) return;
+  data.pengumuman = data.pengumuman.filter(p => p.id !== id);
+  simpanData(data); muatPengumuman(); tampilNotif('🗑️ Pengumuman dihapus');
+}
+
+function resetFormPeng() {
+  ['peng-judul','peng-tgl','peng-isi'].forEach(id => document.getElementById(id).value = '');
+  idPengEdit = null;
+  document.querySelector('#panel-pengumuman .btn-tambah').textContent = '➕ Tambah Pengumuman';
+}
+
+// ===== STATISTIK =====
+function muatStatistik() {
+  const s = data.statistik;
+  document.getElementById('stat-jiwa').value = s.jiwa;
+  document.getElementById('stat-kk').value = s.kk;
+  document.getElementById('stat-laki').value = s.laki;
+  document.getElementById('stat-perempuan').value = s.perempuan;
+}
+
+function simpanStatistik() {
+  data.statistik = {
+    jiwa: document.getElementById('stat-jiwa').value,
+    kk: document.getElementById('stat-kk').value,
+    laki: document.getElementById('stat-laki').value,
+    perempuan: document.getElementById('stat-perempuan').value
+  };
+  simpanData(data); tampilNotif('✅ Statistik disimpan!');
+}
+
+// ===== KONTAK =====
+function muatKontak() {
+  const k = data.kontak;
+  document.getElementById('kontak-telp').value = k.telp || '';
+  document.getElementById('kontak-wa').value = k.wa || '';
+  document.getElementById('kontak-email').value = k.email || '';
+  document.getElementById('kontak-jam').value = k.jam || '';
+  document.getElementById('kontak-alamat').value = k.alamat || '';
+}
+
+function simpanKontak() {
+  data.kontak = {
+    telp: document.getElementById('kontak-telp').value,
+    wa: document.getElementById('kontak-wa').value,
+    email: document.getElementById('kontak-email').value,
+    jam: document.getElementById('kontak-jam').value,
+    alamat: document.getElementById('kontak-alamat').value
+  };
+  simpanData(data); tampilNotif('✅ Info kontak disimpan!');
+}
+
+// ===== HERO =====
+function muatHero() {
+  const h = data.hero;
+  document.getElementById('hero-judul1').value = h.judul1;
+  document.getElementById('hero-judul2').value = h.judul2;
+  document.getElementById('hero-sub').value = h.sub;
+}
+
+function simpanHero() {
+  data.hero = {
+    judul1: document.getElementById('hero-judul1').value,
+    judul2: document.getElementById('hero-judul2').value,
+    sub: document.getElementById('hero-sub').value
+  };
+  simpanData(data); tampilNotif('✅ Tampilan disimpan!');
+}
+
+// ===== DOKUMENTASI FOTO =====
+const KUNCI_FOTO = 'pekon_dokumentasi';
+
+function ambilFotoAdmin() {
+  try { return JSON.parse(localStorage.getItem(KUNCI_FOTO)) || []; }
+  catch(e) { return []; }
+}
+
+function muatFoto() {
+  const listFoto = ambilFotoAdmin();
+  const el = document.getElementById('daftar-foto');
+  const jml = document.getElementById('jml-foto');
+  if (jml) jml.textContent = listFoto.length;
+  if (!el) return;
+  if (!listFoto.length) {
+    el.innerHTML = '<p class="teks-abu" style="grid-column:1/-1">Belum ada foto. Tambahkan foto di atas.</p>';
+    return;
+  }
+  el.innerHTML = listFoto.map((f, i) => `
+    <div style="background:var(--krem);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+      <img src="${f.url}" alt="${f.judul}"
+        style="width:100%;height:130px;object-fit:cover;display:block;background:#e5e7eb;"
+        onerror="this.style.background='#e5e7eb';this.style.display='none'"
+      />
+      <div style="padding:0.7rem;">
+        <p style="font-size:0.85rem;font-weight:700;color:var(--hijau);margin-bottom:0.2rem;">${f.judul}</p>
+        ${f.tanggal ? `<p style="font-size:0.72rem;color:var(--abu);">📅 ${f.tanggal}</p>` : ''}
+        ${f.keterangan ? `<p style="font-size:0.72rem;color:var(--abu);">${f.keterangan}</p>` : ''}
+        <div style="display:flex;gap:0.4rem;margin-top:0.6rem;">
+          <button class="btn-kecil btn-hapus-kecil" onclick="hapusFoto(${i})" style="width:100%;">🗑️ Hapus</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function previewFoto() {
+  const url = document.getElementById('foto-url').value.trim();
+  if (!url) { alert('Masukkan link URL foto terlebih dahulu!'); return; }
+  const preview = document.getElementById('foto-preview');
+  const img = document.getElementById('foto-preview-img');
+  const err = document.getElementById('foto-preview-err');
+  preview.style.display = 'block';
+  img.style.display = 'block';
+  err.style.display = 'none';
+  img.src = url;
+}
+
+function tambahFoto() {
+  const judul = document.getElementById('foto-judul').value.trim();
+  const url = document.getElementById('foto-url').value.trim();
+  const tgl = document.getElementById('foto-tgl').value;
+  const ket = document.getElementById('foto-ket').value.trim();
+  if (!judul || !url) { alert('Judul dan link URL foto wajib diisi!'); return; }
+  const listFoto = ambilFotoAdmin();
+  listFoto.push({ judul, url, tanggal: formatTgl(tgl), keterangan: ket });
+  localStorage.setItem(KUNCI_FOTO, JSON.stringify(listFoto));
+  muatFoto();
+  resetFormFoto();
+  tampilNotif('✅ Foto ditambahkan!');
+}
+
+function hapusFoto(i) {
+  if (!confirm('Hapus foto ini?')) return;
+  const listFoto = ambilFotoAdmin();
+  listFoto.splice(i, 1);
+  localStorage.setItem(KUNCI_FOTO, JSON.stringify(listFoto));
+  muatFoto();
+  tampilNotif('🗑️ Foto dihapus');
+}
+
+function resetFormFoto() {
+  ['foto-judul','foto-url','foto-tgl','foto-ket'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const prev = document.getElementById('foto-preview');
+  if (prev) prev.style.display = 'none';
+}
+
+// ===== GANTI SANDI =====
+function gantiSandi() {
+  const lama = document.getElementById('sandi-lama').value;
+  const baru = document.getElementById('sandi-baru').value;
+  const ulang = document.getElementById('sandi-ulang').value;
+  const pesan = document.getElementById('pesan-sandi');
+
+  if (lama !== data.sandi) { pesan.style.color = 'red'; pesan.textContent = '❌ Kata sandi lama salah!'; return; }
+  if (baru.length < 6) { pesan.style.color = 'red'; pesan.textContent = '❌ Kata sandi baru minimal 6 karakter!'; return; }
+  if (baru !== ulang) { pesan.style.color = 'red'; pesan.textContent = '❌ Kata sandi baru tidak cocok!'; return; }
+
+  data.sandi = baru;
+  simpanData(data);
+  pesan.style.color = 'green'; pesan.textContent = '✅ Kata sandi berhasil diubah!';
+  ['sandi-lama','sandi-baru','sandi-ulang'].forEach(id => document.getElementById(id).value = '');
+  setTimeout(() => pesan.textContent = '', 3000);
+}
+
+// ===== INBOX =====
+const KUNCI_INBOX = 'pekon_inbox';
+let filterAktif = 'semua';
+let idDetailAktif = null;
+
+function ambilInbox() {
+  try { return JSON.parse(localStorage.getItem(KUNCI_INBOX)) || []; }
+  catch(e) { return []; }
+}
+
+function simpanInbox(list) {
+  localStorage.setItem(KUNCI_INBOX, JSON.stringify(list));
+}
+
+function muatInbox() {
+  const list = ambilInbox();
+  const belum = list.filter(p => !p.dibaca).length;
+  const kontak = list.filter(p => p.jenis === 'kontak').length;
+  const aspirasi = list.filter(p => p.jenis === 'aspirasi').length;
+
+  // Update angka ringkasan
+  ['inbox-total','inbox-belum','inbox-kontak','inbox-aspirasi'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = [list.length, belum, kontak, aspirasi][i];
+  });
+
+  // Badge notif di sidebar
+  const badge = document.getElementById('badge-inbox');
+  if (badge) {
+    badge.textContent = belum;
+    badge.style.display = belum > 0 ? 'inline' : 'none';
+  }
+
+  // Filter list
+  let tampil = list;
+  if (filterAktif === 'belum') tampil = list.filter(p => !p.dibaca);
+  else if (filterAktif === 'kontak') tampil = list.filter(p => p.jenis === 'kontak');
+  else if (filterAktif === 'aspirasi') tampil = list.filter(p => p.jenis === 'aspirasi');
+
+  const el = document.getElementById('daftar-inbox');
+  if (!el) return;
+
+  if (!tampil.length) {
+    el.innerHTML = `<div style="text-align:center;padding:2.5rem;color:var(--abu);">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">📭</div>
+      <p style="font-weight:600;">Tidak ada pesan</p>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = tampil.map(p => `
+    <div class="item-row" style="cursor:pointer;border-left:4px solid ${p.dibaca ? '#e5e7eb' : (p.jenis==='aspirasi'?'#7c3aed':'#2563eb')};background:${p.dibaca?'var(--krem)':'white'};"
+      onclick="bukaPesan('${p.id}')">
+      <div class="item-row-info" style="flex:1;">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.3rem;">
+          ${!p.dibaca ? '<span style="width:8px;height:8px;border-radius:50%;background:#dc2626;display:inline-block;flex-shrink:0;"></span>' : ''}
+          <span style="font-size:0.7rem;background:${p.jenis==='aspirasi'?'#ede9fe':'#dbeafe'};color:${p.jenis==='aspirasi'?'#7c3aed':'#1e40af'};padding:0.1rem 0.5rem;border-radius:8px;font-weight:700;">
+            ${p.jenis === 'aspirasi' ? '💬 Aspirasi' : '📋 Form Kontak'}
+          </span>
+          <span style="font-size:0.72rem;color:var(--abu);margin-left:auto;">${p.waktu}</span>
+        </div>
+        <h5 style="font-size:0.9rem;${!p.dibaca?'font-weight:700;':''}color:var(--teks);">${p.nama}</h5>
+        <p style="font-size:0.8rem;color:var(--abu);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">
+          ${p.pesan.substring(0,80)}${p.pesan.length>80?'...':''}
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.3rem;flex-shrink:0;">
+        <button class="btn-kecil btn-hapus-kecil" onclick="event.stopPropagation();hapusPesan('${p.id}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function bukaPesan(id) {
+  const list = ambilInbox();
+  const idx = list.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const p = list[idx];
+
+  // Tandai sudah dibaca
+  list[idx].dibaca = true;
+  simpanInbox(list);
+  idDetailAktif = id;
+
+  document.getElementById('detail-nama').textContent = '👤 ' + p.nama;
+  document.getElementById('detail-kontak-info').textContent = p.kontak ? '📱 ' + p.kontak : '';
+  document.getElementById('detail-jenis').textContent = p.jenis === 'aspirasi' ? '💬 Aspirasi Warga' : '📋 Form Kontak';
+  document.getElementById('detail-layanan').textContent = p.layanan ? '📌 ' + p.layanan : '';
+  document.getElementById('detail-waktu').textContent = '🕐 ' + p.waktu;
+  document.getElementById('detail-isi').textContent = p.pesan;
+  document.getElementById('detail-pesan').style.display = 'block';
+  document.getElementById('detail-pesan').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  muatInbox();
+}
+
+function tutupDetail() {
+  document.getElementById('detail-pesan').style.display = 'none';
+  idDetailAktif = null;
+}
+
+function hapusPesan(id) {
+  if (!confirm('Hapus pesan ini?')) return;
+  let list = ambilInbox().filter(p => p.id !== id);
+  simpanInbox(list);
+  if (idDetailAktif === id) tutupDetail();
+  muatInbox();
+  tampilNotif('🗑️ Pesan dihapus');
+}
+
+function hapusPesanDariDetail() {
+  if (idDetailAktif) hapusPesan(idDetailAktif);
+}
+
+function hapusSemuaPesan() {
+  const list = ambilInbox();
+  if (!list.length) { alert('Tidak ada pesan.'); return; }
+  if (!confirm(`Hapus semua ${list.length} pesan? Tindakan ini tidak bisa dibatalkan.`)) return;
+  simpanInbox([]);
+  tutupDetail();
+  muatInbox();
+  tampilNotif('🗑️ Semua pesan dihapus');
+}
+
+function filterInbox(jenis, btn) {
+  filterAktif = jenis;
+  document.querySelectorAll('#panel-inbox .btn-kecil').forEach(b => {
+    b.style.fontWeight = '600';
+    b.style.opacity = '0.7';
+  });
+  btn.style.opacity = '1';
+  btn.style.fontWeight = '800';
+  tutupDetail();
+  muatInbox();
+}
+
+// Dengarkan pesan baru dari website (tab lain)
+window.addEventListener('storage', function(e) {
+  if (e.key === KUNCI_INBOX) muatInbox();
+});
+</script>
+</body>
+</html>
